@@ -33,7 +33,7 @@ The original source code uses older C programming conventions (K&R style) that m
 
 ### Building from Git Clone
 
-When building from a Git clone, file timestamps may cause `make` to attempt regenerating build system files. To prevent this:
+When building from a Git clone, the build system may attempt to regenerate files using autotools (automake, autoconf, etc.) which you likely don't have in the exact versions from 2005. Here's how to build successfully:
 
 1. **Clone the repository:**
 
@@ -42,15 +42,7 @@ When building from a Git clone, file timestamps may cause `make` to attempt rege
    cd simula
    ```
 
-2. **Fix timestamps:**
-
-   ```bash
-   touch configure.in aclocal.m4 configure Makefile.in Makefile
-   ```
-
-   This updates file timestamps in the correct order so `make` won't try to regenerate them.
-
-3. **Configure the build** with appropriate compiler flags:
+2. **Configure the build** with appropriate compiler flags:
 
    ```bash
    CFLAGS="-O2 -std=gnu89 -Wno-implicit-int -Wno-implicit-function-declaration -Wno-return-mismatch" \
@@ -60,6 +52,19 @@ When building from a Git clone, file timestamps may cause `make` to attempt rege
 
    Replace `/path/to/installation/directory` with your desired installation location (e.g., `$HOME/cim-compiler`).
 
+3. **Disable autotools regeneration:**
+
+   After running `configure`, the generated `Makefile` may try to regenerate build files. Disable this:
+
+   ```bash
+   sed -i '/automake/s/^/#/' Makefile
+   sed -i '/autoconf/s/^/#/' Makefile  
+   sed -i '/autoheader/s/^/#/' Makefile
+   sed -i '/aclocal/s/^/#/' Makefile
+   ```
+
+   These commands comment out any Makefile rules that would trigger autotools regeneration.
+
 4. **Compile:**
 
    ```bash
@@ -67,13 +72,15 @@ When building from a Git clone, file timestamps may cause `make` to attempt rege
    ```
 
    Note: You will see warnings during compilation. This is expected for this legacy codebase.
+   
+   **If you see errors** about `automake-1.9`, `autoconf`, `autoheader`, or `aclocal` not being found, it means step 3 didn't catch all the rules. Simply run the sed commands from step 3 again and retry `make`.
 
 5. **Install:**
 
    ```bash
    make install
    ```
-   
+
 ### Explanation of Compiler Flags
 
 - `-O2`: Optimization level 2
@@ -153,7 +160,7 @@ libcim.so.3 => /path/to/installation/directory/lib/libcim.so.3 (0x...)
 - Compiler warnings are expected during build (can be ignored)
 - Requires specific compiler flags for modern GCC compatibility
 - Runtime library path must be configured manually
-- When building from Git, timestamps need to be fixed (see "Building from Git Clone" above)
+- When building from Git, the Makefile may attempt to regenerate build files using old autotools versions (automake-1.9, etc.). Use the sed commands in step 3 of "Building from Git Clone" to disable this.
 
 ## Additional Resources
 
