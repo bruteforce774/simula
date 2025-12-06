@@ -36,7 +36,6 @@ The original source code uses older C programming conventions (K&R style) that m
 1. **Configure the build** with appropriate compiler flags:
 
    ```bash
-   cd cim-3.37
    CFLAGS="-O2 -std=gnu89 -Wno-implicit-int -Wno-implicit-function-declaration -Wno-return-mismatch" \
    LDFLAGS=-s \
    ./configure --prefix=/path/to/installation/directory
