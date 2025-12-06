@@ -31,9 +31,26 @@ The original source code uses older C programming conventions (K&R style) that m
 - Standard build tools (make, autoconf, etc.)
 - Linux/Unix system (tested on Fedora)
 
-### Building from Source
+### Building from Git Clone
 
-1. **Configure the build** with appropriate compiler flags:
+When building from a Git clone, file timestamps may cause `make` to attempt regenerating build system files. To prevent this:
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/bruteforce774/simula.git
+   cd simula
+   ```
+
+2. **Fix timestamps:**
+
+   ```bash
+   touch configure.in aclocal.m4 configure Makefile.in Makefile
+   ```
+
+   This updates file timestamps in the correct order so `make` won't try to regenerate them.
+
+3. **Configure the build** with appropriate compiler flags:
 
    ```bash
    CFLAGS="-O2 -std=gnu89 -Wno-implicit-int -Wno-implicit-function-declaration -Wno-return-mismatch" \
@@ -43,7 +60,7 @@ The original source code uses older C programming conventions (K&R style) that m
 
    Replace `/path/to/installation/directory` with your desired installation location (e.g., `$HOME/cim-compiler`).
 
-2. **Compile:**
+4. **Compile:**
 
    ```bash
    make
@@ -51,12 +68,12 @@ The original source code uses older C programming conventions (K&R style) that m
 
    Note: You will see warnings during compilation. This is expected for this legacy codebase.
 
-3. **Install:**
+5. **Install:**
 
    ```bash
    make install
    ```
-
+   
 ### Explanation of Compiler Flags
 
 - `-O2`: Optimization level 2
@@ -136,6 +153,7 @@ libcim.so.3 => /path/to/installation/directory/lib/libcim.so.3 (0x...)
 - Compiler warnings are expected during build (can be ignored)
 - Requires specific compiler flags for modern GCC compatibility
 - Runtime library path must be configured manually
+- When building from Git, timestamps need to be fixed (see "Building from Git Clone" above)
 
 ## Additional Resources
 
@@ -149,5 +167,5 @@ This is a historical preservation project. If you discover issues with compilati
 
 ---
 
-**Preserved by:** [Daniel Andreas Wang/bruteforce774]  
+**Preserved by:** Daniel Andreas Wang ([@bruteforce774](https://github.com/bruteforce774))  
 **Date:** December 2025
