@@ -10,7 +10,7 @@ Simula, developed in the 1960s at the Norwegian Computing Center in Oslo by Kris
 
 **Original Authors:**
 - Sverre Hvammen Johansen, Department of Informatics, University of Oslo
-- Terje Mjoes, Hydro Data, Oslo
+- Terje Mjøs, Hydro Data, Oslo
 - Stein Krogdahl, Department of Informatics, University of Oslo
 
 **Licence:** GNU General Public Licence (see COPYING file)
